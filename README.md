@@ -9,4 +9,4 @@ Du installerar detta som ett vanligt script. Drag And Drop
 - Klart!
 
 # Licence
-Du får andra vad du vill i scriptet men inte ladda upp de på nytt och ta cred för det. (Hänvisa dom hit istället)
+Du får andra vad du vill i scriptet men inte ladda upp de på nytt och ta cred för det. (Hänvisa dom hit istället https://github.com/SAmme064/samme-blackmarket)
