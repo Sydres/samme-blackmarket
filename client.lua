@@ -10,7 +10,7 @@ local Keys = {
 }
 
 local PlayerData              = {}
-local blackon = true
+
 Citizen.CreateThread(function ()
     while ESX == nil do
         TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -84,7 +84,6 @@ function OpenWeaponMenu()
     },
     function(data, menu)
         menu.close()
-        blackon = true
         local action = data.current.value
         
         if action == 'kniv' then
@@ -97,7 +96,6 @@ function OpenWeaponMenu()
     end,
     function(data, menu)
         menu.close()
-        blackon = true
     end
     )
 end
