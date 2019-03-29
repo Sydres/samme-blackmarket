@@ -9,8 +9,13 @@ local Keys = {
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
 
-local PlayerData              = {}
+local blackzones = {
+    [1] = vector3(2577.81, 4675.65, 34.08),
+    --[2] = vector3(x, y, z) om du vill ha svartamarknaden på fler än 1 ställe
+}
 
+local PlayerData              = {}
+local blackon = true
 Citizen.CreateThread(function ()
     while ESX == nil do
         TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -32,21 +37,25 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(8)
-        local coords = GetEntityCoords(PlayerPedId())
-        local dist = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, 2577.81, 4675.65, 34.08, true)
+        for k, v in pairs(blackzones) do
+            local coords = GetEntityCoords(PlayerPedId())
+            local dist = GetDistanceBetweenCoords(coords, v, true)
   
-        if dist < 15 then
-          DrawMarker(27,2577.81, 4675.65, 33.1 , 0, 0, 0, 0, 0, 0, 2.001, 2.0001, 0.5001, 246, 255, 0, 200, 0, 0, 0, 0)
-        end
-        if dist < 15 then
-          show3dtext(2577.81, 4675.65, 34.08, tostring("Tryck ~r~E~w~ för att öppna svartamarknaden."))
-        end
-        if dist < 1.3 and IsControlPressed(0, Keys['E']) then
-            OpenWeaponMenu()
+            if dist <= 15 then
+                DrawMarker(27, v.x, v.y, v.z, 0, 0, 0, 0, 0, 0, 2.001, 2.0001, 0.5001, 246, 255, 0, 200, 0, 0, 0, 0)
+
+                if dist <= 15 then
+                    show3dtext(v.x, v.y, v.z, 'Tryck ~r~E~w~ för att öppna svartamarknaden.')
+                
+                    if dist <= 1.3 and IsControlPressed(0, Keys['E']) then
+                        OpenWeaponMenu()
+                    end
+                end
+            end
         end
     end
 end)
-  
+
 function show3dtext(x, y, z, text)
     local onScreen, _x, _y = World3dToScreen2d(x, y, z)
     local p = GetGameplayCamCoords()
@@ -89,7 +98,7 @@ function OpenWeaponMenu()
         if action == 'kniv' then
             TriggerServerEvent('buyWeapon', 'WEAPON_KNIFE', 4567, 1)
         elseif action == 'ak' then
-            TriggerServerEvent('buyWeapon', 'WEAPON_ASSAULTRIFLE', 45670000, 5)
+            TriggerServerEvent('buyWeapon', 'WEAPON_ASSAULTRIFLE', 45670000, 1) -- WEAPON_ASSAULTRIFLE är vapnet ofc, 45670000 är vad de ska kosta, 1 är hur mycket ammunition det ska vara
         elseif action == 'cuffs' then
             TriggerServerEvent('buyItem', 'handcuffs', 200000, 1) -- handcuffs är itemet, 20000 är vad de ska kosta, 1 är antalet
         end
@@ -99,5 +108,7 @@ function OpenWeaponMenu()
     end
     )
 end
+
+
 
 
